@@ -1,3 +1,4 @@
+// @ts-expect-error - pdf-parse has no ESM default export
 import pdf from 'pdf-parse';
 import mammoth from 'mammoth';
 import { createClient } from '@/lib/supabase/server';

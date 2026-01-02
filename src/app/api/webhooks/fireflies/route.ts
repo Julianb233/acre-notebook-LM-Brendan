@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/admin';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { syncMeeting } from '@/lib/fireflies';
 import { n8nTriggers } from '@/lib/n8n';
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
         // Find the partner associated with this Fireflies user
         // This assumes we store the Fireflies user_id in partner metadata
-        const supabase = createClient();
+        const supabase = createAdminClient();
 
         let partnerId: string | null = null;
 
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       case 'meeting.started':
       case 'meeting.ended': {
         // Just log these events for now
-        const supabase = createClient();
+        const supabase = createAdminClient();
 
         await supabase.from('webhook_logs').insert({
           direction: 'inbound',

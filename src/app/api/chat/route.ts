@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { streamText, convertToCoreMessages, type Message as AIMessage } from 'ai';
+import { streamText, convertToModelMessages, type Message as AIMessage } from 'ai';
 import { createClient } from '@/lib/supabase/server';
 import { getModel, getDefaultProvider, validateProvider, SYSTEM_PROMPT, type AIProvider } from '@/lib/ai/providers';
 import { retrieveRelevantChunks, formatChunksForContext, formatSourceCitations } from '@/lib/ai/rag';
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
     const result = streamText({
       model,
       system: systemMessage,
-      messages: convertToCoreMessages(messages),
+      messages: convertToModelMessages(messages),
       temperature: 0.7,
       maxTokens: 2000,
       onFinish: async ({ text }) => {
