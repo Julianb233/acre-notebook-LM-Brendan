@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport, type UIMessage as Message } from 'ai';
-import { Settings, FileText, Sparkles, Headphones, MessageSquare } from 'lucide-react';
+import { Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -57,7 +57,7 @@ export function ChatInterface({
   onConversationCreated,
 }: ChatInterfaceProps) {
   const [conversationId, setConversationId] = useState(initialConversationId);
-  const [provider, setProvider] = useState<AIProvider>('openai');
+  const [provider, setProvider] = useState<AIProvider>('google');
   const [useRAG, setUseRAG] = useState(true);
   const [sourceCitations, setSourceCitations] = useState<SourceCitation[]>([]);
   const [showSettings, setShowSettings] = useState(false);
@@ -157,102 +157,6 @@ export function ChatInterface({
 
   return (
     <div className="flex flex-col h-full bg-[#f8f9fa]">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white border-b">
-        {/* Title & Badge */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-            <Sparkles className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <h2 className="font-semibold text-gray-900">Notebook Guide</h2>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              {documentIds && documentIds.length > 0 && (
-                <span>{documentIds.length} source(s)</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Mode Toggles */}
-        <div className="flex-1 flex justify-center">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="bg-gray-100 p-1 rounded-full">
-            <TabsList className="bg-transparent h-8 p-0">
-              <TabsTrigger value="chat" className="rounded-full px-4 h-full data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-                <MessageSquare className="h-3 w-3 mr-2" /> Chat
-              </TabsTrigger>
-              <TabsTrigger value="audio" className="rounded-full px-4 h-full data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-                <Headphones className="h-3 w-3 mr-2" /> Audio
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-
-        <Sheet open={showSettings} onOpenChange={setShowSettings}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Chat Settings</SheetTitle>
-              <SheetDescription>
-                Configure AI provider and retrieval settings
-              </SheetDescription>
-            </SheetHeader>
-
-            <div className="mt-6 space-y-6">
-              {/* AI Provider */}
-              <div className="space-y-2">
-                <Label htmlFor="provider">AI Provider</Label>
-                <Select
-                  value={provider}
-                  onValueChange={(v) => setProvider(v as AIProvider)}
-                >
-                  <SelectTrigger id="provider">
-                    <SelectValue placeholder="Select provider" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="openai">OpenAI (GPT-4o)</SelectItem>
-                    <SelectItem value="anthropic">Anthropic (Claude)</SelectItem>
-                    <SelectItem value="google">Google (Gemini)</SelectItem>
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-gray-500">
-                  Choose which AI model to use for responses
-                </p>
-              </div>
-
-              {/* RAG Toggle */}
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label htmlFor="rag">Document Retrieval (RAG)</Label>
-                  <p className="text-xs text-gray-500">
-                    Search your documents for relevant context
-                  </p>
-                </div>
-                <Switch
-                  id="rag"
-                  checked={useRAG}
-                  onCheckedChange={setUseRAG}
-                />
-              </div>
-
-              {/* Conversation info */}
-              {conversationId && (
-                <div className="pt-4 border-t">
-                  <Label className="text-xs text-gray-500">Conversation ID</Label>
-                  <p className="text-xs font-mono text-gray-400 mt-1 truncate">
-                    {conversationId}
-                  </p>
-                </div>
-              )}
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-
       {
         activeTab === 'chat' ? (
           <>

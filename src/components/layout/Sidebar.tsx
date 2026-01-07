@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from "next-themes";
 import { cn } from '@/lib/utils';
 import {
   MessageSquare,
@@ -14,6 +15,8 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   BookOpen,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -42,6 +45,7 @@ const adminNavItems = [
 
 export function Sidebar({ collapsed, onToggle, isAdminView, className }: SidebarProps) {
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
   const navItems = isAdminView ? adminNavItems : clientNavItems;
 
   return (
@@ -108,6 +112,23 @@ export function Sidebar({ collapsed, onToggle, isAdminView, className }: Sidebar
               </p>
             </div>
           )}
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className={cn(
+              'w-full text-gray-400 hover:text-gray-700 hover:bg-gray-50 mb-2',
+              collapsed ? 'justify-center' : 'justify-start pl-3'
+            )}
+          >
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+            {!collapsed && <span className="ml-2">Toggle Theme</span>}
+          </Button>
 
           <Button
             variant="ghost"
