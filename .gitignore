@@ -45,3 +45,4 @@ next-env.d.ts
 .hermes/
 .env.production
 .env.local
+AGENTS.md
